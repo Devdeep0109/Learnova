@@ -25,9 +25,6 @@ public class Tests {
     @JsonBackReference
     private UserInfo createdBy;
 
-    @OneToMany(mappedBy = "test")
-    private List<TestAttempt> attempts;
-
     private LocalDateTime createdAt;
 
 

@@ -21,7 +21,6 @@ public class GroqResponseParser {
                         .path("content")
                         .asText();
 
-        // ⭐ CLEAN AI RESPONSE (FIX HERE)
         content = cleanJson(content);
 
         return mapper.readValue(content, McqResponse.class);
