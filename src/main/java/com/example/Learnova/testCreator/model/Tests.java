@@ -1,5 +1,6 @@
 package com.example.Learnova.testCreator.model;
 
+import com.example.Learnova.testCreator.model.enums.Status;
 import com.example.Learnova.testPerformer.model.TestAttempt;
 import com.example.Learnova.user.model.UserInfo;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -24,6 +25,9 @@ public class Tests {
     @JoinColumn(name = "created_by")
     @JsonBackReference
     private UserInfo createdBy;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     private LocalDateTime createdAt;
 

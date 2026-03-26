@@ -1,5 +1,6 @@
 package com.example.Learnova.testCreator.controller;
 
+import com.example.Learnova.testCreator.dto.DocumentUploadResponse;
 import com.example.Learnova.testCreator.service.DocumentService;
 import com.example.Learnova.user.config.customUserDetails.CustomUserDetails;
 import com.example.Learnova.user.model.UserInfo;
@@ -29,7 +30,7 @@ public class DocumentController {
         try {
             CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
             UserInfo user = userDetails.getUser();
-            String response = documentService.uploadDocument(file, user);
+            DocumentUploadResponse response = documentService.uploadDocument(file, user);
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {

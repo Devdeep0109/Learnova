@@ -26,9 +26,15 @@ public class TestAccessService {
     public PublishTestResponse publishTest(
             Long testId,PublishTestRequest request, UserInfo publisher) {
 
+
+
         // 1. Validate Test
         Tests test = testsRepository.findById(testId)
                     .orElseThrow(() -> new ResourceNotFoundException("Test not found"));
+
+        if (request.getMaxAttempts() == null || request.getMaxAttempts() < 1) {
+            throw new IllegalArgumentException("Max attempts must be at least 1");
+        }
 
         // 2. Create Access
         TestAccess access = new TestAccess();

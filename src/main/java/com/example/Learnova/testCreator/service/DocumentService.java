@@ -2,6 +2,7 @@ package com.example.Learnova.testCreator.service;
 
 import com.example.Learnova.exception.BadRequestException;
 import com.example.Learnova.exception.FileProcessingException;
+import com.example.Learnova.testCreator.dto.DocumentUploadResponse;
 import com.example.Learnova.testCreator.model.Documents;
 import com.example.Learnova.testCreator.model.enums.Status;
 import com.example.Learnova.testCreator.parser.DocxParser;
@@ -36,7 +37,7 @@ public class DocumentService {
     @Autowired
     private DocxParser docxParser;
 
-    public String uploadDocument(MultipartFile file, UserInfo user) throws Exception {
+    public DocumentUploadResponse uploadDocument(MultipartFile file, UserInfo user) throws Exception {
 
         // 1. Validate file
         String originalFileName = file.getOriginalFilename();
@@ -91,9 +92,12 @@ public class DocumentService {
             document.setUploadedAt(LocalDateTime.now());
             document.setStatus(Status.COMPLETED);
 
-            documentsRepository.save(document);
+            Documents savedDocument = documentsRepository.save(document);
 
-            return "Document added successfully!!";
+            return new DocumentUploadResponse(
+                    savedDocument.getId(),
+                    "Document uploaded successfully"
+            );
 
         } catch (FileProcessingException ex) {
             throw ex; // rethrow custom exception

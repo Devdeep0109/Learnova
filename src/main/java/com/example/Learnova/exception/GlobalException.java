@@ -91,4 +91,22 @@ public class GlobalException {
 
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    // FILE PROCESSING / AI GENERATION ERROR
+    @ExceptionHandler(FileProcessingException.class)
+    public ResponseEntity<ApiErrorResponse> handleFileProcessing(
+            FileProcessingException ex,
+            HttpServletRequest request) {
+
+        ApiErrorResponse error = ApiErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.UNPROCESSABLE_ENTITY.value())
+                .error("FILE_PROCESSING_FAILED")
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .build();
+
+        return new ResponseEntity<>(error, HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
 }

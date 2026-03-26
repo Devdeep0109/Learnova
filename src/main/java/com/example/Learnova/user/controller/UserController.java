@@ -1,6 +1,7 @@
 package com.example.Learnova.user.controller;
 
 import com.example.Learnova.user.dto.LoginRequestDto;
+import com.example.Learnova.user.dto.LoginResponseDto;
 import com.example.Learnova.user.dto.RegisterRequestDto;
 import com.example.Learnova.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +22,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequestDto request) {
+    public ResponseEntity<LoginResponseDto> login(@RequestBody LoginRequestDto request) {
         return ResponseEntity.ok(userService.login(request));
     }
 

@@ -5,6 +5,7 @@ import com.example.Learnova.exception.BadRequestException;
 import com.example.Learnova.exception.ResourceAlreadyExistsException;
 import com.example.Learnova.user.config.jwt.JwtService;
 import com.example.Learnova.user.dto.LoginRequestDto;
+import com.example.Learnova.user.dto.LoginResponseDto;
 import com.example.Learnova.user.dto.RegisterRequestDto;
 import com.example.Learnova.user.model.UserInfo;
 import com.example.Learnova.user.repository.UserRepo;
@@ -53,7 +54,7 @@ public class UserService {
         return "Register successfully!";
     }
 
-    public String login(LoginRequestDto request) {
+    public LoginResponseDto login(LoginRequestDto request) {
 
         try {
 
@@ -64,9 +65,20 @@ public class UserService {
                     )
             );
 
-            return jwtService.generateToken(
+            org.springframework.security.core.userdetails.UserDetails userDetails =
                     (org.springframework.security.core.userdetails.UserDetails)
-                            Objects.requireNonNull(authentication.getPrincipal())
+                            Objects.requireNonNull(authentication.getPrincipal());
+
+            // Fetch full user from DB (IMPORTANT to get role)
+            UserInfo user = userRepo.findByEmail(request.getEmail())
+                    .orElseThrow(() -> new AuthenticationFailedException("User not found"));
+
+            String token = jwtService.generateToken(userDetails);
+
+            return new LoginResponseDto(
+                    token,
+                    user.getEmail(),
+                    user.getRole()   // ✅ Enum coming here
             );
 
         } catch (BadCredentialsException ex) {

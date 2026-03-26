@@ -13,12 +13,12 @@ public class TestAttemptAnswer {
     private Long id;
 
     // Which attempt
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "attempt_id")
     private TestAttempt attempt;
 
     // Which question
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id")
     private Questions question;
 
